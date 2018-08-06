@@ -10,19 +10,18 @@ int main(){
 	printf("Digite um numero inteiro: ");
 	scanf("%d", &num);
 
-	printf("Não é aqui o problema");
-
 	printf("Resultado: %d", Digitos(num));
 
 }
 
 int Digitos(int N){
 
-	int retorno = Digitos(N/10) + 1;
+	int retorno = 1;
+
+	if( N >= 10 )
+		retorno = Digitos(N/10) + 1;
 	
 	return retorno;
-
-	printf("Não é aqui o problema %d ", i++);
 }
 
 
