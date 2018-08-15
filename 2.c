@@ -6,15 +6,15 @@ void printBigNum(int *num);
 void printBigNum(int *num);
 int *menor(int *num1, int *num2);
 int casasDecimaisBigNum(int *num);
-void addZeroEsquerdaBigNum(int *num1, int *num2);
+int *addZeroEsquerdaBigNum(int *num1, int *num2);
 int *maisCasasDecimaisBigNum(int *num1, int *num2);
 int *menosCasasDecimaisBigNum(int *num1, int *num2); 
 int mesmoNumDeCasasDecimais(int *num1, int *num2);
 
 
 int main(){
-	int num1[MAXREAD];
-	int num2[MAXREAD];
+	int *num1 = (int*) malloc(MAXREAD * sizeof(int));
+	int *num2 = (int*) malloc(MAXREAD * sizeof(int));
 
 	printf("Digite um numero inteiro qualquer: ");
 	lerBignNum(num1);
@@ -22,32 +22,41 @@ int main(){
 	printf("Digite um segundo numero inteiro qualquer: ");
 	lerBignNum(num2);
 
-	//Testes
-	printf("Número 1: "); printBigNum(num1); printf("\n");
-	printf("Tamnaho 1: %d\n",casasDecimaisBigNum(num1));
-
 	printf("\n");
+
+	teste(num1, num2);
 	
-	printf("Número 2: "); printBigNum(num2); printf("\n");
-	printf("Tamnaho 2: %d\n",casasDecimaisBigNum(num2));
-
-	printf("Mais casas decimais: ");printBigNum(maisCasasDecimaisBigNum(num1,num2)); printf("\n");
-	printf("Menos casas decimais: ");printBigNum(menosCasasDecimaisBigNum(num1,num2)); printf("\n");
-
-	addZeroEsquerdaBigNum(num1, num2);
-	printf("\n");
-
-	if(!(mesmoNumDeCasasDecimais(num1,num2)))
-		printBigNum(menosCasasDecimaisBigNum(num1,num2)); printf("\n");
-
-
-
 }//end main
 
+void teste(int *num1, int num2){
 
-void addZeroEsquerdaBigNum(int *num1, int *num2){
+	//antes add 0's
+	numeroETamanho(num1);
+	numeroETamanho(num2);
 
-	int addZeros[MAXREAD];
+	//Add 0 no menor número
+	if(mesmoNumDeCasasDecimais(num1,num2))
+		return 0;
+	else if(num1 == menosCasasDecimaisBigNum(num1,num2))
+			num1 = addZeroEsquerdaBigNum(num1, num2);
+		else 
+			num2 = addZeroEsquerdaBigNum(num1, num2);
+
+	//Depois de add 0's
+	numeroETamanho(num1);
+	numeroETamanho(num2);
+}
+
+void numeroETamanho(int *num){
+	printf("Número : "); printBigNum(num); printf("\n");
+	printf("Tamnaho: %d\n",casasDecimaisBigNum(num));
+	printf("\n");	
+}
+
+
+int *addZeroEsquerdaBigNum(int *num1, int *num2){
+
+	int *addZeros = (int*) malloc(MAXREAD * sizeof(int));
 	int *menorNum = menor(num1, num2);
 	int numerosDeZeros = casasDecimaisBigNum(maisCasasDecimaisBigNum(num1,num2)) - casasDecimaisBigNum(menosCasasDecimaisBigNum(num1,num2));
 	int i, j;
@@ -61,11 +70,9 @@ void addZeroEsquerdaBigNum(int *num1, int *num2){
 		addZeros[i+j] = menorNum[i];  
 	}
 
-	if(menor(num1, num2) == num1)
-		num1 = menorNum;
-	else
-		num2 = menorNum;
+	addZeros[i+j] = -1;
 
+	return addZeros;
 }//end addZeroEsquerda
 
 int *menor(int *num1, int *num2){
