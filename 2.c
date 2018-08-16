@@ -1,9 +1,14 @@
 #include<stdio.h>
+
 #define MAXREAD 200
+#define ENDBIGNUM -1
 
 void lerBignNum(int *num);
 void printBigNum(int *num);
 void printBigNum(int *num);
+void teste(int *num1, int *num2);//pra teste
+void numeroETamanho(int *num);//pra teste
+void igualarCasasDecimais(int *num1, int *num2);
 int *menor(int *num1, int *num2);
 int casasDecimaisBigNum(int *num);
 int *addZeroEsquerdaBigNum(int *num1, int *num2);
@@ -15,6 +20,7 @@ int mesmoNumDeCasasDecimais(int *num1, int *num2);
 int main(){
 	int *num1 = (int*) malloc(MAXREAD * sizeof(int));
 	int *num2 = (int*) malloc(MAXREAD * sizeof(int));
+	int *num3;
 
 	printf("Digite um numero inteiro qualquer: ");
 	lerBignNum(num1);
@@ -22,19 +28,56 @@ int main(){
 	printf("Digite um segundo numero inteiro qualquer: ");
 	lerBignNum(num2);
 
-	printf("\n");
+	//printf("\n");
 
 	teste(num1, num2);
+
+	printBigNum(num2);
 	
+	//printf("Resultado: ");
+	//num3 =  somaBigNum(num1, num2);
+	//printBigNum(num3);
+	/*num1 = memset(num1, 0, 5 * sizeof(int));
+	num1[6] = ENDBIGNUM; 
+	numeroETamanho(num1);*/
 }//end main
 
-void teste(int *num1, int num2){
+
+int somaBigNum(int *num1, int *num2){
+	int *resultado = (int *)malloc(MAXREAD *sizeof(int)); 
+	//Coloco zero em todas as casas decimais que o maior número tem mais 5.
+	resultado = memset(resultado, 0, maisCasasDecimaisBigNum(num1,num2) + 5 * sizeof(int));//Aqui eu zero todo vetor de resultado. Pensar em mudar isso aqui depois pra zerar so o que vou precisar
+	int i;
+	int aux;
+
+	igualarCasasDecimais(num1, num2);
+
+	
+	for(i = casasDecimaisBigNum(num1) ; i >= 0; i--){
+		resultado[i+1] += num1[i] + num2[i];//Somo em vez de atribuir pq caso essa casa tenha uma unidade decimal da soma anterio, não haverá perda
+
+		if(resultado[i+1] >= 10){
+			resultado[i+1] = resultado[i+1] -10;
+			resultado[i] = 1;
+		} 
+	}
+
+	//Como a sempre a chance de sobrar um número 0 no inicio. Criar função que não printa zeros a Esquerda
+	//Ou função que apaga zeros a esquerda.
+	resultado[casasDecimaisBigNum(num1) + 2] = ENDBIGNUM;
+
+	return resultado;
+}
+
+
+void teste(int *num1, int *num2){
 
 	//antes add 0's
 	numeroETamanho(num1);
 	numeroETamanho(num2);
 
-	//Add 0 no menor número
+	igualarCasasDecimais(num1,num2);
+	/*//Add 0 no menor número
 	if(mesmoNumDeCasasDecimais(num1,num2))
 		return 0;
 	else if(num1 == menosCasasDecimaisBigNum(num1,num2))
@@ -42,10 +85,24 @@ void teste(int *num1, int num2){
 		else 
 			num2 = addZeroEsquerdaBigNum(num1, num2);
 
+*/
 	//Depois de add 0's
 	numeroETamanho(num1);
 	numeroETamanho(num2);
 }
+
+void igualarCasasDecimais(int *num1, int *num2){ 
+
+	printf("Cheguei aqui\n");
+	//Add 0 no menor número
+	if(mesmoNumDeCasasDecimais(num1,num2)){return 0; printf("Achei que erram iguais\n");}		
+	else if(num1 == menosCasasDecimaisBigNum(num1,num2))
+			{num1 = addZeroEsquerdaBigNum(num1, num2); printf("Num 1\n");}
+		else 
+			{num2 = addZeroEsquerdaBigNum(num1, num2); printf("Num 2\n");}
+
+}//end igularCasasDecimais
+
 
 void numeroETamanho(int *num){
 	printf("Número : "); printBigNum(num); printf("\n");
@@ -66,12 +123,11 @@ int *addZeroEsquerdaBigNum(int *num1, int *num2){
 			addZeros[j] = 0;
 		}
 
-
 		addZeros[i+j] = menorNum[i];  
 	}
 
-	addZeros[i+j] = -1;
-
+	addZeros[i+j] = ENDBIGNUM;
+	
 	return addZeros;
 }//end addZeroEsquerda
 
@@ -123,7 +179,7 @@ void lerBignNum(int *num){
 	}
 
 	//Marca o final o número
-	num[i] = -1;
+	num[i] = ENDBIGNUM;
 
 }//end lerBignNum
 
@@ -131,36 +187,16 @@ void printBigNum(int *num){
 
 	int i = 0;
 
-	for(i = 0; num[i] != -1; i++){
+	for(i = 0; num[i] != ENDBIGNUM; i++){
 		printf("%d",num[i]);
 	}
 
 }//end printBigNum
 
-/*
-void soma(int *resultado, int *num1, int *num2){
-	//fazer a soma acessano os elementos de tras pra frente
-	for()
-}
-
-void somar_um_elemento( int *vai_um, int *resultado, int *num1, int *num2){
-	int aux = *num1 + *num2;
-
-	if(aux >= 10){
-		aux = aux - 10;
-		*resultado = aux;
-		*vai_um +=1; 
-	}
-	else{
-		*resultado = aux;
-	}
-
-}
-*/
 int casasDecimaisBigNum(int *num){
 	int i = 0;
 
-	while(num[i++] != -1)//Compara antes de incrementar. Ao achar, incrementa mais um.
+	while(num[i++] != ENDBIGNUM)//Compara antes de incrementar. Ao achar, incrementa mais um.
 		;
 
 	return i-1;
