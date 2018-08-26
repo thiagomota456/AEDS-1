@@ -2,6 +2,9 @@
 
 void mostrar(int *n);
 void printarVetor(int *vetor);
+void copiaVetor(int *v1, int *v2);
+int comparaVetor(int *v1, int *v2);
+int avaliar_vetor(int *vetor);
 int soma_todo_vetor(int *n);
 void decrementar_1_posicao(int *vetor);
 void decompor(int number);
@@ -24,89 +27,92 @@ int main(){
 }
 
 void decompor(int number){
-
-
-	//O máximo de posiçoes que preciso é igual ao número de  
 	int *vetor = (int *) calloc(num, sizeof(int));
-	int aux;
-	//int indice_atual = 0 , indice_proximo = 1;
+	int *ultimo = (int *) calloc(num, sizeof(int));
+	vetor[0] = --number;
+ 	int i;
 
-	//inicialmente 
-	vetor[indice_atual] = num-1;
-
-
-	//While enquando todas as posições do vetor não forem 1
-	while(!vetor_todo_decomposto(vetor)){
-
-		printf("Vetor antes de ser avaliado: "); printarVetor(vetor);
-
-		if(soma_todo_vetor(vetor) == num){
-			mostrar(vetor);
-
-			/*//Pra que eu depremente do indice 0 o depois dele == 1, ele != de 1.(E tem que ser ele o atual)
-			if((vetor[indice_proximo] == 1) && (vetor[indice_atual] != 1) && (indice_atual == 0)){
-				decrementar_1_posicao(vetor);
-			}
-			else */if( (vetor[indice_proximo] != 1) && (vetor[indice_atual] != 1)){
-			//if((vetor[indice_atual] != 1){
-				indice_atual = indice_proximo;
-
-				//Tenho que garantir que o inicice proximo seja <= a num -1
-				if(indice_proximo < (num-1))
-					indice_proximo++;
-
-			}else if(indice_atual != 0){
-				indice_atual--;
-				indice_proximo--;
-			}
-
-		}
+	while(!(vetor_todo_decomposto(vetor))){//temporario
 
 		
-			printf("Indice atual = %d\n", indice_atual);
-			printf("Indice proximo= %d\n", indice_proximo);
 
-		if( (vetor[indice_proximo] != 0) && (vetor[indice_proximo] != 1) )
-			vetor[indice_proximo]--;
-		else if( (vetor[indice_proximo]==1) && (vetor[indice_atual]!=1) && (indice_atual != 0))
-			vetor[indice_atual]--;
+		//Condiçoes para duplicar
+		//Tem mais. Deixa essas por enquanto
+		if( ( !(avaliar_vetor(vetor)) && (vetor[indice_proximo] == 0) ) 
 
-		printf("Vetor decremntado: "); printarVetor(vetor);		
+			|| ( (indice_atual !=0) && (vetor[indice_proximo] == 0) )
 
-		//condição para duplicar
-		if((vetor[indice_atual] != 1) && (vetor[indice_proximo] == 0)){
-			aux = vetor[indice_atual];
-			vetor[indice_proximo] = aux;
+		){
+			vetor[indice_proximo] = vetor[indice_atual];
+		}//end if(!(avaliar_vetor(vetor))&&(vetor[indice_proximo]==0))
 
-			printf("Indice duplicado: "); printarVetor(vetor);			
-
-		}else if((vetor[indice_atual] != 1) && (vetor[indice_proximo] == 1)){
-
-			if((indice_atual == 0) && vetor[indice_proximo] == 1){
-				printf("1° posição decremntada: "); printarVetor(vetor);
-				decrementar_1_posicao(vetor);
-			}
-			else{
+		i = 0;
+		while(i < num){
+			if(!(avaliar_vetor(vetor)) && (vetor[indice_proximo] > 1) ){
 				vetor[indice_proximo]--;
+			}else if(indice_atual != 0 && vetor[indice_atual] > 1){
+				vetor[indice_atual]--;
 			}
 
-		}else if(indice_atual != 0){
-			if((vetor[indice_atual-1] != 1) && (vetor[indice_proximo] == 0)){
+			//printarVetor(vetor);
+			i++;
+		}//end while(i < num)
+	
+		//Caso tenha encontrado
+		if(avaliar_vetor(vetor) && !(comparaVetor(vetor, ultimo))){
+			mostrar(vetor);
+			copiaVetor(vetor, ultimo);
+		}//end if avalia
 
-				aux = vetor[indice_atual];
-				vetor[indice_proximo] = aux;
-				vetor[indice_atual-1]--;
+		//printf("Incide proximo %d\n", indice_proximo);
+		//printf("Incide atual %d\n", indice_atual);
 
-			}else if((vetor[indice_atual] == 1) && (vetor[indice_proximo] == 1) && (indice_atual-1 == 0)){
-				decrementar_1_posicao(vetor);
-			}
+		//condição pra decrementar o primeiro 
+		if((avaliar_vetor(vetor)) && (indice_atual == 0) && (vetor[indice_proximo] == 1)){
+			decrementar_1_posicao(vetor);		
+		}else if(( (vetor[indice_proximo+1] == 0) && (vetor[indice_proximo] != 1)) || ((vetor[indice_proximo+1] == 0) && (soma_todo_vetor(vetor) < num) )){
+			indice_atual++;
+			indice_proximo++;
+		}else if(vetor[indice_proximo] == 1){
+			indice_atual--;
+			indice_proximo--;			
 		}
 
-		getchar();
 
-	}		 
+		//getchar();
+	}//end while
+
+	mostrar(vetor);
 
 }//end decompor
+
+int avaliar_vetor(int *vetor){
+	if(soma_todo_vetor(vetor) == num)
+		return 1;
+
+	return 0;	
+}
+
+void copiaVetor(int *v1, int *v2){
+	int i;
+
+	for(i = 0; i < num; i++){
+		v2[i] = v1[i];
+	}
+
+}//end copiaVetor
+
+int comparaVetor(int *v1, int *v2){
+	int i;
+
+	for(i = 0; i < num; i++){
+		if(v2[i] != v1[i])
+			return 0;
+	}
+	return 1;
+
+}//end comparaVetor
+
 
 int vetor_todo_decomposto(int *vetor){
 	int i;
@@ -145,7 +151,7 @@ int soma_todo_vetor(int *n){
 	int aux = 0;
 	int i;
 
-	for(i = 0; i < num; i++){
+	for(i = 0; i < 5; i++){
 		aux += n[i];
 	}
 
