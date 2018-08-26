@@ -1,12 +1,14 @@
 #include<stdio.h>
 
 void mostrar(int *n);
+void printarVetor(int *vetor);
 int soma_todo_vetor(int *n);
 void decrementar_1_posicao(int *vetor);
 void decompor(int number);
 int vetor_todo_decomposto(int *vetor);
 
 int num;
+int indice_atual = 0 , indice_proximo = 1;
 
 int main(){
 
@@ -19,47 +21,90 @@ int main(){
 	printf("%d\n",num );
 
 	decompor(num);
-
-
 }
 
 void decompor(int number){
 
 
 	//O máximo de posiçoes que preciso é igual ao número de  
-	int vetor[num];
-	int i;
+	int *vetor = (int *) calloc(num, sizeof(int));
 	int aux;
+	//int indice_atual = 0 , indice_proximo = 1;
 
 	//inicialmente 
-	vetor[0] = num;
-	decrementar_1_posicao(vetor);
+	vetor[indice_atual] = num-1;
+
 
 	//While enquando todas as posições do vetor não forem 1
 	while(!vetor_todo_decomposto(vetor)){
 
+		printf("Vetor antes de ser avaliado: "); printarVetor(vetor);
+
 		if(soma_todo_vetor(vetor) == num){
 			mostrar(vetor);
-			decrementar_1_posicao(vetor);
+
+			/*//Pra que eu depremente do indice 0 o depois dele == 1, ele != de 1.(E tem que ser ele o atual)
+			if((vetor[indice_proximo] == 1) && (vetor[indice_atual] != 1) && (indice_atual == 0)){
+				decrementar_1_posicao(vetor);
+			}
+			else */if( (vetor[indice_proximo] != 1) && (vetor[indice_atual] != 1)){
+			//if((vetor[indice_atual] != 1){
+				indice_atual = indice_proximo;
+
+				//Tenho que garantir que o inicice proximo seja <= a num -1
+				if(indice_proximo < (num-1))
+					indice_proximo++;
+
+			}else if(indice_atual != 0){
+				indice_atual--;
+				indice_proximo--;
+			}
+
 		}
-		else{
 
-			//duplico
-			aux = vetor[0];
-			vetor[1] = aux;
+		
+			printf("Indice atual = %d\n", indice_atual);
+			printf("Indice proximo= %d\n", indice_proximo);
 
-			for (i = 0; i < num; ++i)
-			{
-				//Se não for ==  a num ainda
-				if(!testa_se_igual_a_num(vetor))
-					vetor[1]--;
-				else
-					vetor[0]--;
-			}//end for i
+		if( (vetor[indice_proximo] != 0) && (vetor[indice_proximo] != 1) )
+			vetor[indice_proximo]--;
+		else if( (vetor[indice_proximo]==1) && (vetor[indice_atual]!=1) && (indice_atual != 0))
+			vetor[indice_atual]--;
 
-		}//end else 
+		printf("Vetor decremntado: "); printarVetor(vetor);		
 
-	}//end while 
+		//condição para duplicar
+		if((vetor[indice_atual] != 1) && (vetor[indice_proximo] == 0)){
+			aux = vetor[indice_atual];
+			vetor[indice_proximo] = aux;
+
+			printf("Indice duplicado: "); printarVetor(vetor);			
+
+		}else if((vetor[indice_atual] != 1) && (vetor[indice_proximo] == 1)){
+
+			if((indice_atual == 0) && vetor[indice_proximo] == 1){
+				printf("1° posição decremntada: "); printarVetor(vetor);
+				decrementar_1_posicao(vetor);
+			}
+			else{
+				vetor[indice_proximo]--;
+			}
+
+		}else if(indice_atual != 0){
+			if((vetor[indice_atual-1] != 1) && (vetor[indice_proximo] == 0)){
+
+				aux = vetor[indice_atual];
+				vetor[indice_proximo] = aux;
+				vetor[indice_atual-1]--;
+
+			}else if((vetor[indice_atual] == 1) && (vetor[indice_proximo] == 1) && (indice_atual-1 == 0)){
+				decrementar_1_posicao(vetor);
+			}
+		}
+
+		getchar();
+
+	}		 
 
 }//end decompor
 
@@ -69,39 +114,30 @@ int vetor_todo_decomposto(int *vetor){
 	for (i = 0; i < num; ++i)
 	{
 		if(vetor[i] != 1)
-			return 0;
+		return 0;
 	}
 
 	return 1;
-}
-
-int testa_se_igual_a_num(int *vetor){
-
-	if(soma_todo_vetor(vetor) == num){
-		mostrar(vetor);
-		decrementar_1_posicao(vetor);
-		return 1;
-	}
-	else
-		return 0;
-
 }
 
 void decrementar_1_posicao(int *vetor){
 
 	int aux;
 
+	//Reseto os indices
+	indice_atual = 0; 
+	indice_proximo = 1;
+
 	aux = vetor[0];
 
 	//Zero todas as posições do vetor
-	memset(vetor, 0,  num * sizeof(vetor));
+	memset(vetor, 0,  num * sizeof(int));
 
 	//Decremento 1
 	aux--;
 
 	//add a 1° posicao  1 decrementado
 	vetor[0] = aux;
-
 }
 
 //Funcionando
@@ -133,5 +169,14 @@ void mostrar(int *n){
 				printf("\n");
 		}
 	}//end for
-
 }//end mostrar
+
+void printarVetor(int *vetor){
+	int i;
+
+	for(i = 0; i < num; i++){
+		printf("%d ",vetor[i] );
+	}
+
+	printf("\n");
+}//end printarVetor
