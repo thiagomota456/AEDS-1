@@ -34,8 +34,6 @@ void decompor(int number){
 
 	while(!(vetor_todo_decomposto(vetor))){//temporario
 
-		
-
 		//Condiçoes para duplicar
 		//Tem mais. Deixa essas por enquanto
 		if( ( !(avaliar_vetor(vetor)) && (vetor[indice_proximo] == 0) ) 
@@ -53,6 +51,14 @@ void decompor(int number){
 			}else if(indice_atual != 0 && vetor[indice_atual] > 1){
 				vetor[indice_atual]--;
 			}
+
+
+			//Caso tenha encontrado
+			if(avaliar_vetor(vetor) && !(comparaVetor(vetor, ultimo))){
+				mostrar(vetor);
+				copiaVetor(vetor, ultimo);
+			}//end if avalia
+
 
 			//printarVetor(vetor);
 			i++;
@@ -77,7 +83,6 @@ void decompor(int number){
 			indice_atual--;
 			indice_proximo--;			
 		}
-
 
 		//getchar();
 	}//end while
