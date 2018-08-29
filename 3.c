@@ -2,8 +2,9 @@
 
 void mostrar(int *n);
 void printarVetor(int *vetor);
-void duplicar(int *v, int atual);
+void duplicar(int *v, int *atual);
 void copiaVetor(int *v1, int *v2);
+int confirma_decremento_indice1(int *vetor);
 int comparaVetor(int *v1, int *v2);
 int avaliar_vetor(int *vetor);
 int soma_todo_vetor(int *n);
@@ -35,13 +36,22 @@ void decompor(int number){
 	//Apaguei tudo que estava dentro do While. Acho que não tava suficientemente bom.
 	while(!(vetor_todo_decomposto(vetor))){
 
+
+
 			//duplico enquanto o valor no vetor for menor
 			while(soma_todo_vetor(vetor) < num){
+
+				printf("Atual = %d\n", atual);
 				duplicar(vetor, &atual);
+				printf("Duplicar");
+				printarVetor(vetor);
+				getchar();
 				
 			}//end while(soma_todo_vetor(vetor) < num)
-				
+			printf("Duplica: ");			
+			printarVetor(vetor);				
 
+			
 			//Se a soma de todo vetor é maior que o número dígitado
 			//E não é o indíce 0, eu decremento ate não ser mais maio
 			while(soma_todo_vetor(vetor) > num)
@@ -50,16 +60,65 @@ void decompor(int number){
 				else
 					break;
 
+			printf("Decrementa atual: ");
+			printarVetor(vetor);
+
 			//Até então acho que colocaria o teste de mostrar aqui.
-			if(soma_todo_vetor(vetor) == num && confirma_depremento_indice1(vetor) )
-			
-					
+			//Ver se decremento primira posição
+			if(soma_todo_vetor(vetor) == num && confirma_decremento_indice1(vetor) ){
+				decrementar_1_posicao(vetor);
+				atual = 0;
+			}
+				
+
+			printf("Decrementar primira pos: ");
+			printarVetor(vetor);
+
+
+
+			//Meu vetor é == num e não é o caso de decrementar 1° indice			
+			if(soma_todo_vetor(vetor) == num && vetor[atual] != 1)
+				if(atual > 0)
+					vetor[atual]--;
+
+			//a ideia é procurar alguem que não seja atual e nem indice 0 que seja maior que i 3 deprementar
+			int i = atual;
+			for(; i > 0; i--){
+				if(soma_todo_vetor(vetor) == num && vetor[i] > 1)
+					vetor[i]--;
+			}	
+
+			//Função que volta e decremeta o tltimo que não é um 
+
+	
+			printf("teste decrementa  se == : ");
+			printarVetor(vetor);
+				
+
+		getchar();
 	}//end while(!(vetor_todo_decomposto(vetor)))
 
 	//Printa vetor todo decomposto
 	mostrar(vetor);
 
 }//end decompor
+
+
+int confirma_decremento_indice1(int *vetor){
+	int i = 1;
+
+	for(; i < num; i++){
+		if(!(vetor[i] == 1 || vetor[i] == 0)){
+			//printf("falso pra decrementar 1 posição: ");
+			//printarVetor(vetor);
+			//getchar();
+			return 0;
+		}
+				
+	}
+
+	return 1;
+}//end confirma_decremento_indice1
 
 void duplicar(int *v, int *atual){
 
@@ -69,6 +128,9 @@ void duplicar(int *v, int *atual){
 		//Sempre que eu duplica, atualizo o atual
 		*atual+=1;
 	}
+
+	//mostrar(v);
+	//getchar();
 
 }//end duplicar
 
