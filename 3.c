@@ -65,7 +65,7 @@ void decompor(int number){
 
 			//Até então acho que colocaria o teste de mostrar aqui.
 			//Ver se decremento primira posição
-			if(soma_todo_vetor(vetor) == num && confirma_decremento_indice1(vetor) ){
+			if(soma_todo_vetor(vetor) == num && confirma_decremento_indice1(vetor) && !(vetor_todo_decomposto(vetor))){
 				decrementar_1_posicao(vetor);
 				atual = 0;
 			}
