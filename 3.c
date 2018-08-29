@@ -2,6 +2,7 @@
 
 void mostrar(int *n);
 void printarVetor(int *vetor);
+void duplicar(int *v);
 void copiaVetor(int *v1, int *v2);
 int comparaVetor(int *v1, int *v2);
 int avaliar_vetor(int *vetor);
@@ -14,7 +15,6 @@ int num;
 int indice_atual = 0 , indice_proximo = 1;
 
 int main(){
-
 	printf("Digite um numero inteiro: ");
 	scanf("%d", &num);
 
@@ -30,66 +30,29 @@ void decompor(int number){
 	int *vetor = (int *) calloc(num, sizeof(int));
 	int *ultimo = (int *) calloc(num, sizeof(int));
 	vetor[0] = --number;
- 	int i;
+ 	int atual = 0;
 
-	while(!(vetor_todo_decomposto(vetor))){//temporario
+	//Apaguei tudo que estava dentro do While. Acho que não tava suficientemente bom.
+	while(!(vetor_todo_decomposto(vetor))){
 
-		//Condiçoes para duplicar
-		//Tem mais. Deixa essas por enquanto
-		if( ( !(avaliar_vetor(vetor)) && (vetor[indice_proximo] == 0) ) 
-
-			|| ( (indice_atual !=0) && (vetor[indice_proximo] == 0) )
-
-		){
-			vetor[indice_proximo] = vetor[indice_atual];
-		}//end if(!(avaliar_vetor(vetor))&&(vetor[indice_proximo]==0))
-
-		i = 0;
-		while(i < num){
-			if(!(avaliar_vetor(vetor)) && (vetor[indice_proximo] > 1) ){
-				vetor[indice_proximo]--;
-			}else if(indice_atual != 0 && vetor[indice_atual] > 1){
-				vetor[indice_atual]--;
-			}
-
-
-			//Caso tenha encontrado
-			if(avaliar_vetor(vetor) && !(comparaVetor(vetor, ultimo))){
-				mostrar(vetor);
-				copiaVetor(vetor, ultimo);
-			}//end if avalia
-
-
-			//printarVetor(vetor);
-			i++;
-		}//end while(i < num)
-	
-		//Caso tenha encontrado
-		if(avaliar_vetor(vetor) && !(comparaVetor(vetor, ultimo))){
-			mostrar(vetor);
-			copiaVetor(vetor, ultimo);
-		}//end if avalia
-
-		//printf("Incide proximo %d\n", indice_proximo);
-		//printf("Incide atual %d\n", indice_atual);
-
-		//condição pra decrementar o primeiro 
-		if((avaliar_vetor(vetor)) && (indice_atual == 0) && (vetor[indice_proximo] == 1)){
-			decrementar_1_posicao(vetor);		
-		}else if(( (vetor[indice_proximo+1] == 0) && (vetor[indice_proximo] != 1)) || ((vetor[indice_proximo+1] == 0) && (soma_todo_vetor(vetor) < num) )){
-			indice_atual++;
-			indice_proximo++;
-		}else if(vetor[indice_proximo] == 1){
-			indice_atual--;
-			indice_proximo--;			
-		}
-
-		//getchar();
+			//duplico enquanto o valor no vetor for menor
+			while(soma_todo_vetor(vetor) < num)
+				duplicar(vetor, atual);
+					
 	}//end while
 
+	//Printa vetor todo decomposto
 	mostrar(vetor);
 
 }//end decompor
+
+void duplicar(int *v, int atual){
+
+	if((v[atual+1] == 0) && (soma_todo_vetor(v)<= num)){
+		v[atual+1] = v[atual]; 
+	}
+
+}//end duplicar
 
 int avaliar_vetor(int *vetor){
 	if(soma_todo_vetor(vetor) == num)
