@@ -2,7 +2,7 @@
 
 void mostrar(int *n);
 void printarVetor(int *vetor);
-void duplicar(int *v);
+void duplicar(int *v, int atual);
 void copiaVetor(int *v1, int *v2);
 int comparaVetor(int *v1, int *v2);
 int avaliar_vetor(int *vetor);
@@ -36,20 +36,38 @@ void decompor(int number){
 	while(!(vetor_todo_decomposto(vetor))){
 
 			//duplico enquanto o valor no vetor for menor
-			while(soma_todo_vetor(vetor) < num)
-				duplicar(vetor, atual);
+			while(soma_todo_vetor(vetor) < num){
+				duplicar(vetor, &atual);
+				
+			}//end while(soma_todo_vetor(vetor) < num)
+				
+
+			//Se a soma de todo vetor é maior que o número dígitado
+			//E não é o indíce 0, eu decremento ate não ser mais maio
+			while(soma_todo_vetor(vetor) > num)
+				if(atual > 0)
+					vetor[atual]--;
+				else
+					break;
+
+			//Até então acho que colocaria o teste de mostrar aqui.
+			if(soma_todo_vetor(vetor) == num && confirma_depremento_indice1(vetor) )
+			
 					
-	}//end while
+	}//end while(!(vetor_todo_decomposto(vetor)))
 
 	//Printa vetor todo decomposto
 	mostrar(vetor);
 
 }//end decompor
 
-void duplicar(int *v, int atual){
+void duplicar(int *v, int *atual){
 
-	if((v[atual+1] == 0) && (soma_todo_vetor(v)<= num)){
-		v[atual+1] = v[atual]; 
+	if((v[*atual+1] == 0) && (soma_todo_vetor(v)<= num)){
+		v[*atual+1] = v[*atual];
+
+		//Sempre que eu duplica, atualizo o atual
+		*atual+=1;
 	}
 
 }//end duplicar
