@@ -41,15 +41,15 @@ void decompor(int number){
 			//duplico enquanto o valor no vetor for menor
 			while(soma_todo_vetor(vetor) < num){
 
-				printf("Atual = %d\n", atual);
+				//printf("Atual = %d\n", atual);
 				duplicar(vetor, &atual);
-				printf("Duplicar");
-				printarVetor(vetor);
-				getchar();
+				//printf("Duplicar");
+				//printarVetor(vetor);
+				//getchar();
 				
 			}//end while(soma_todo_vetor(vetor) < num)
-			printf("Duplica: ");			
-			printarVetor(vetor);				
+			//printf("Duplica: ");			
+			//printarVetor(vetor);				
 
 			
 			//Se a soma de todo vetor é maior que o número dígitado
@@ -60,8 +60,12 @@ void decompor(int number){
 				else
 					break;
 
-			printf("Decrementa atual: ");
-			printarVetor(vetor);
+			//printf("Decrementa atual: ");
+			//printarVetor(vetor);
+
+
+			/********************TESTAR SE AQUI É ADEQUADO PARA FUNÇÃO MOSTRAR************************/
+			mostrar(vetor);
 
 			//Até então acho que colocaria o teste de mostrar aqui.
 			//Ver se decremento primira posição
@@ -71,8 +75,8 @@ void decompor(int number){
 			}
 				
 
-			printf("Decrementar primira pos: ");
-			printarVetor(vetor);
+			//printf("Decrementar primira pos: ");
+			//printarVetor(vetor);
 
 
 
@@ -91,15 +95,15 @@ void decompor(int number){
 			//Função que volta e decremeta o tltimo que não é um 
 
 	
-			printf("teste decrementa  se == : ");
-			printarVetor(vetor);
+			//printf("teste decrementa  se == : ");
+			//printarVetor(vetor);
 				
 
-		getchar();
+		//getchar();
 	}//end while(!(vetor_todo_decomposto(vetor)))
 
 	//Printa vetor todo decomposto
-	mostrar(vetor);
+	//mostrar(vetor);
 
 }//end decompor
 
