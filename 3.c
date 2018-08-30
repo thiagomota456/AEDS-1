@@ -3,6 +3,7 @@
 void mostrar(int *n);
 void printarVetor(int *vetor);
 void duplicar(int *v, int *atual);
+void zerar_vetor(int *v);
 void copiaVetor(int *v1, int *v2);
 int confirma_decremento_indice1(int *vetor);
 int comparaVetor(int *v1, int *v2);
@@ -28,8 +29,9 @@ int main(){
 }
 
 void decompor(int number){
-	int *vetor = (int *) calloc(num, sizeof(int));
-	int *ultimo = (int *) calloc(num, sizeof(int));
+	 
+	int vetor[num];
+	zerar_vetor(vetor);
 	vetor[0] = --number;
  	int atual = 0;
 
@@ -107,6 +109,14 @@ void decompor(int number){
 
 }//end decompor
 
+void zerar_vetor(int *v){
+
+	int i;
+	for(i = 0; i < num; i++)
+		v[i] = 0;
+
+}
+
 
 int confirma_decremento_indice1(int *vetor){
 	int i = 1;
@@ -181,15 +191,11 @@ int vetor_todo_decomposto(int *vetor){
 void decrementar_1_posicao(int *vetor){
 
 	int aux;
-
-	//Reseto os indices
-	indice_atual = 0; 
-	indice_proximo = 1;
-
 	aux = vetor[0];
 
 	//Zero todas as posições do vetor
-	memset(vetor, 0,  num * sizeof(int));
+	//memset(vetor, 0,  num * sizeof(int));
+	zerar_vetor(vetor);
 
 	//Decremento 1
 	aux--;
