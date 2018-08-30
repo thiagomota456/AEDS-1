@@ -5,15 +5,18 @@ void printarVetor(int *vetor);
 void duplicar(int *v, int *atual);
 void zerar_vetor(int *v);
 void copiaVetor(int *v1, int *v2);
+int excluir_numero_decomposto(int *vetor,int num);
 int confirma_decremento_indice1(int *vetor);
 int comparaVetor(int *v1, int *v2);
 int avaliar_vetor(int *vetor);
+void zerar_poscoes_finais(int *v);
+int ultimo_numero_decomposto(int *vetor,int n);
 int soma_todo_vetor(int *n);
 void decrementar_1_posicao(int *vetor);
 void decompor(int number);
 int vetor_todo_decomposto(int *vetor);
 
-int num;
+int num = 8;
 int indice_atual = 0 , indice_proximo = 1;
 
 int main(){
@@ -26,6 +29,17 @@ int main(){
 	printf("%d\n",num );
 
 	decompor(num);
+
+	/*int teste[] = {1,3,4, 2, 0, 1, 1, 0};
+	zerar_poscoes_finais(teste);
+	printarVetor(teste);
+
+
+	
+	int as[] = {1,3,4, 2, 1, 1, 0,1};
+	zerar_poscoes_finais(as);
+	printarVetor(as);*/
+
 }
 
 void decompor(int number){
@@ -41,13 +55,6 @@ void decompor(int number){
 	while(!(vetor_todo_decomposto(vetor))){
 
 
-			if( !(comparaVetor(vetor, casoQueEstouComProblema)) )
-				if(soma_todo_vetor(vetor) < num && vetor[atual] == 1){
-					vetor[atual]++;
-					copiaVetor(vetor, casoQueEstouComProblema);
-				}
-
-
 			//duplico enquanto o valor no vetor for menor
 			while(soma_todo_vetor(vetor) < num){
 
@@ -56,6 +63,8 @@ void decompor(int number){
 				printf("Duplicar");
 				printarVetor(vetor);
 				getchar();
+
+				atual +=1;
 				
 			}//end while(soma_todo_vetor(vetor) < num)
 			printf("Duplica: ");			
@@ -77,6 +86,7 @@ void decompor(int number){
 			/********************TESTAR SE AQUI É ADEQUADO PARA FUNÇÃO MOSTRAR************************/
 			mostrar(vetor);
 
+
 			//Até então acho que colocaria o teste de mostrar aqui.
 			//Ver se decremento primira posição
 			if(soma_todo_vetor(vetor) == num && confirma_decremento_indice1(vetor) && !(vetor_todo_decomposto(vetor))){
@@ -84,9 +94,22 @@ void decompor(int number){
 				atual = 0;
 			}
 				
+			
 
 			printf("Decrementar primira pos: ");
 			printarVetor(vetor);
+
+
+
+			
+
+
+			int i = atual;
+			for(; i > 0; i--){
+				if(soma_todo_vetor(vetor) == num && vetor[i] == 2){
+					vetor[i]--;
+				}
+			}	
 
 
 
@@ -95,17 +118,17 @@ void decompor(int number){
 				if(atual > 0)
 					vetor[atual]--;
 
-			//a ideia é procurar alguem que não seja atual e nem indice 0 que seja maior que i 3 deprementar
-			//int j;
-			//for(j = 0; j > 0; j++){
-				
-			//}
-
-			int i = atual;
-			for(; i > 0; i--){
-				if(soma_todo_vetor(vetor) == num && vetor[i] > 1)
-					vetor[i]--;
-			}	
+			int j = atual;
+			for(; j > 0; j--){
+				if(vetor[j] > 2 && j <  atual && vetor[atual]==1){
+					vetor[j]--;
+					zerar_poscoes_finais(vetor);
+					atual=j;
+					break;
+				}
+			}
+			printf("Teste novo: ");
+			printarVetor(vetor);
 
 			//Função que volta e decremeta o tltimo que não é um 
 
@@ -122,14 +145,49 @@ void decompor(int number){
 
 }//end decompor
 
-void zerar_vetor(int *v){
+int excluir_decompostos(int *v){
+	int i;
+	
+}
 
+void zerar_vetor(int *v){
 	int i;
 	for(i = 0; i < num; i++)
 		v[i] = 0;
 
-}
+}//end zerar_vetor
 
+void zerar_poscoes_finais(int *v){
+	int i;
+	int j = 0;
+	for(i = 1; i < (num-1); i++){
+
+		//printf("Pocição %d = %d\n", i, v[i]);
+		if(v[i] >= 1){
+			//printf("Ultimo número decomposto = %d\n",ultimo_numero_decomposto(v,i));
+			if(ultimo_numero_decomposto(v,i)){
+				while(j < (num-i)){
+			//		printf("Entrei aqui");
+					v[j+i] = 0;
+					j++;
+
+				}//end while
+			}//end if(ultimo_numero_decomposto(v,i))
+		}//end if(v[i] > 1)
+	}//end for
+
+}//end zerar_poscoes_finais
+
+int ultimo_numero_decomposto(int *vetor,int n){
+	int i = n;
+
+	for(; i < num; i++){
+		if( (vetor[i] != 1) && (vetor[i] != 0))
+			return 0;
+	}
+
+	return 1;
+}//end excluir_numero_decomposto
 
 int confirma_decremento_indice1(int *vetor){
 	int i = 1;
@@ -147,13 +205,15 @@ int confirma_decremento_indice1(int *vetor){
 	return 1;
 }//end confirma_decremento_indice1
 
+
 void duplicar(int *v, int *atual){
 
-	if((v[*atual+1] == 0) && (soma_todo_vetor(v)<= num)){
+	//if((v[*atual+1] == 0) && (soma_todo_vetor(v)<= num)){
+	if((v[*atual+1] == 0)){
 		v[*atual+1] = v[*atual];
 
 		//Sempre que eu duplica, atualizo o atual
-		*atual+=1;
+		//*atual+=1;
 	}
 
 	//mostrar(v);
