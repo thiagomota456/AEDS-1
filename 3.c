@@ -32,6 +32,8 @@ void decompor(int number){
 	 
 	int vetor[num];
 	zerar_vetor(vetor);
+	int casoQueEstouComProblema[num];
+	zerar_vetor(vetor);
 	vetor[0] = --number;
  	int atual = 0;
 
@@ -39,19 +41,25 @@ void decompor(int number){
 	while(!(vetor_todo_decomposto(vetor))){
 
 
+			if( !(comparaVetor(vetor, casoQueEstouComProblema)) )
+				if(soma_todo_vetor(vetor) < num && vetor[atual] == 1){
+					vetor[atual]++;
+					copiaVetor(vetor, casoQueEstouComProblema);
+				}
+
 
 			//duplico enquanto o valor no vetor for menor
 			while(soma_todo_vetor(vetor) < num){
 
-				//printf("Atual = %d\n", atual);
+				printf("Atual = %d\n", atual);
 				duplicar(vetor, &atual);
-				//printf("Duplicar");
-				//printarVetor(vetor);
-				//getchar();
+				printf("Duplicar");
+				printarVetor(vetor);
+				getchar();
 				
 			}//end while(soma_todo_vetor(vetor) < num)
-			//printf("Duplica: ");			
-			//printarVetor(vetor);				
+			printf("Duplica: ");			
+			printarVetor(vetor);				
 
 			
 			//Se a soma de todo vetor é maior que o número dígitado
@@ -62,8 +70,8 @@ void decompor(int number){
 				else
 					break;
 
-			//printf("Decrementa atual: ");
-			//printarVetor(vetor);
+			printf("Decrementa atual: ");
+			printarVetor(vetor);
 
 
 			/********************TESTAR SE AQUI É ADEQUADO PARA FUNÇÃO MOSTRAR************************/
@@ -77,8 +85,8 @@ void decompor(int number){
 			}
 				
 
-			//printf("Decrementar primira pos: ");
-			//printarVetor(vetor);
+			printf("Decrementar primira pos: ");
+			printarVetor(vetor);
 
 
 
@@ -88,6 +96,11 @@ void decompor(int number){
 					vetor[atual]--;
 
 			//a ideia é procurar alguem que não seja atual e nem indice 0 que seja maior que i 3 deprementar
+			//int j;
+			//for(j = 0; j > 0; j++){
+				
+			//}
+
 			int i = atual;
 			for(; i > 0; i--){
 				if(soma_todo_vetor(vetor) == num && vetor[i] > 1)
@@ -97,11 +110,11 @@ void decompor(int number){
 			//Função que volta e decremeta o tltimo que não é um 
 
 	
-			//printf("teste decrementa  se == : ");
-			//printarVetor(vetor);
+			printf("teste decrementa  se == : ");
+			printarVetor(vetor);
 				
 
-		//getchar();
+		getchar();
 	}//end while(!(vetor_todo_decomposto(vetor)))
 
 	//Printa vetor todo decomposto
