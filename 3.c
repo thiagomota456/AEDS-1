@@ -114,7 +114,7 @@ int confirma_decremento_indice1(int *vetor){
 			//getchar();
 			return 0;
 		}
-				
+		
 	}
 
 	return 1;
@@ -199,7 +199,7 @@ int soma_todo_vetor(int *n){
 	int aux = 0;
 	int i;
 
-	for(i = 0; i < 5; i++){
+	for(i = 0; i < num; i++){
 		aux += n[i];
 	}
 
