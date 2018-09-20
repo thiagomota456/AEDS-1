@@ -26,22 +26,16 @@ int ** Aloca_matriz(int **matriz, int lin, int col){
 
 int cidadeCadastrada(CIDADE * cidaddes,int numero_de_cidades, char * cidade_lida1){
 
-/*
-tenho que alterar essa função
-*/
-
-	printf("\n\n\n");
-
 	int i;
 
 	//Percorre todas as cidades ja existentes
 
 	for(i = 0; i < numero_de_cidades; i++){
 
-		printf("Cidade %s de inicide %d\n", cidaddes[i].nome, i);
+		//printf("Cidade %s de inicide %d\n", cidaddes[i].nome, i);
 
 		if(strcmp(cidaddes[i].nome, cidade_lida1) == 0){
-			printf("Encontrei a cidae\n");
+			//printf("Encontrei a cidae\n");
 			return cidaddes[i].numero +1;
 		}
 
@@ -49,8 +43,7 @@ tenho que alterar essa função
 	}
 
 	//Retorna 0
-	printf("\n\n\n");
-
+ 
 	return 0;
 
 }//end cidadeCadastrada
@@ -67,46 +60,44 @@ int ** lerArquivo( char *nome_do_arquivo, char * cidade_de_origem, char * cidade
 	int ** matriz_de_distancias;
 	PonteiroDeArquivo = fopen(nome_do_arquivo, "r");
 
-	printf("Declarações ok\n");
-
 	int numero_de_cidades_e_pesos;
 	int i = 0;
 
 	fscanf(PonteiroDeArquivo, "%d", &numero_de_cidades_e_pesos);
-	printf("Numero de linhas %d\n", numero_de_cidades_e_pesos);
+	//printf("Numero de linhas %d\n", numero_de_cidades_e_pesos);
+
+	//Aux pra ler cidaes, posso sibstitui depois por cidade_de_origem e ciade destino
 
 	char cidade_lida1[21];
 	char cidade_lida2[21];
 
-	printf("Cheguei aqui ?");
+	//variaveis pra add valores a matriz de ciades
 
 	int linha, coluna, distancia;
 	
 	//Inicio minha matriz de cidades
 
-	*matriz_de_distancias = malloc( 490 * sizeof(int));
-	printf("Alocação da matriz ok\n");
+	matriz_de_distancias = malloc(sizeof(int));
 
 	while(i < numero_de_cidades_e_pesos){
 
 		//leio a linha
 
 		fscanf(PonteiroDeArquivo,"%s %s %d", cidade_lida1, cidade_lida2, &distancia);
-
-		printf("Lido: %s %s %d\n", cidade_lida1, cidade_lida2, distancia);
+		//printf("Lido: %s %s %d\n", cidade_lida1, cidade_lida2, distancia);
 
 		//Cidade Lida 1
 		//Caso a cidade não exita
 
 		if( cidadeCadastrada(cidaddes, *numero_de_cidades_lidas, cidade_lida1) == 0){
 
-			printf("Cadastrando cidade %s\n", cidade_lida1);
+			//printf("Cadastrando cidade %s\n", cidade_lida1);
 
 			//Cadastro nova cidade
 
 			strcpy(cidaddes[*numero_de_cidades_lidas].nome, cidade_lida1);
 
-			printf("Guardei %s no meu vetor de vidade com indice %d\n",cidaddes[*numero_de_cidades_lidas].nome,  *numero_de_cidades_lidas);
+			//printf("Guardei %s no meu vetor de vidade com indice %d\n",cidaddes[*numero_de_cidades_lidas].nome,  *numero_de_cidades_lidas);
 
 			//Add número da cidade
 			
@@ -120,7 +111,9 @@ int ** lerArquivo( char *nome_do_arquivo, char * cidade_de_origem, char * cidade
 
 			*numero_de_cidades_lidas = *numero_de_cidades_lidas + 1;
 
-			/******************Falta alocar matriz***********/
+			//Aloca matriz que contem as distancias das cidades
+
+			matriz_de_distancias = Aloca_matriz(matriz_de_distancias, *numero_de_cidades_lidas,*numero_de_cidades_lidas);
 			
 
 		}else{
@@ -138,13 +131,13 @@ int ** lerArquivo( char *nome_do_arquivo, char * cidade_de_origem, char * cidade
 
 		if( cidadeCadastrada(cidaddes, *numero_de_cidades_lidas, cidade_lida2) == 0){
 
-			printf("Cadastrando cidade %s\n", cidade_lida2);
+			//printf("Cadastrando cidade %s\n", cidade_lida2);
 
 			//Cadastro nova cidade
 
 			strcpy(cidaddes[*numero_de_cidades_lidas].nome, cidade_lida2);
 
-			printf("Guardei %s no meu vetor de vidade com indice %d\n",cidaddes[*numero_de_cidades_lidas].nome,  *numero_de_cidades_lidas);
+			//printf("Guardei %s no meu vetor de vidade com indice %d\n",cidaddes[*numero_de_cidades_lidas].nome,  *numero_de_cidades_lidas);
 
 			//Add número da cidade
 			
@@ -158,7 +151,9 @@ int ** lerArquivo( char *nome_do_arquivo, char * cidade_de_origem, char * cidade
 
 			*numero_de_cidades_lidas = *numero_de_cidades_lidas + 1;
 
-			/******************Falta alocar matriz***********/
+			//Aloca Matriz
+
+			matriz_de_distancias = Aloca_matriz(matriz_de_distancias, *numero_de_cidades_lidas,*numero_de_cidades_lidas);
 
 		}else{
 			//Se ja foi cadastrado add a linha da cidade que é a mesma que seu numero
@@ -168,28 +163,51 @@ int ** lerArquivo( char *nome_do_arquivo, char * cidade_de_origem, char * cidade
 
 		}//end cadastro cidade 2
 
-		//add peso da cidae 1 pra cidade 2  e da cidade 2 pra cidade 1
-
-					
-				
+		//add peso da cidae 1 pra cidade 2  e da cidade 2 pra cidade
+	
+		matriz_de_distancias[linha][coluna] = distancia;
+		matriz_de_distancias[coluna][linha] = distancia;		
 
 		//Incremento
+
 		i++;
 
 	}//end while(i<numero_de_cidades_e_pesos)
 
+	//Leio cidade de origem e cidade de destino
 
-	printarVetorDeCidades(CIDADE * cidaddes, int quantidade);
+	fscanf(PonteiroDeArquivo,"%s %s", cidade_de_origem, cidade_de_destino);
+
+	//Fecho arquivo
 
 	fclose(PonteiroDeArquivo);
+
+	printarVetorDeCidades( cidaddes, *numero_de_cidades_lidas);
+
+	//Retona matriz de distancia
 
 	return matriz_de_distancias;
 
 }//end lerArquivo
 
-printarVetorDeCidades(){
+void printarVetorDeCidades(CIDADE * cidaddes, int quantidade){
+	
+	int i;
 
-}//end 
+	for(i = 0; i < quantidade; i++){
+		printf("%s %d\n", cidaddes[i].nome, cidaddes[i].numero);
+	}
+
+
+}//end printarVetorDeCidades
+
+void printarMatrizQuadrada(int **matriz, int tamanho){
+	int i, j;
+
+	for(i = 0; i < tamanho; i++)
+		for(j = 0; j < tamanho; j++)
+			printf
+}
 
 int main(){
 
@@ -207,11 +225,8 @@ int main(){
 
 	printf("Digite o nome do arquivo de entrada: ");
 	scanf("%s", nome_do_arquivo);
-	printf("%s\n", nome_do_arquivo);
+	//printf("%s\n", nome_do_arquivo);
 	matriz_de_distancias = lerArquivo(nome_do_arquivo, cidade_de_origem, cidade_de_destino, cidaddes, &numero_de_cidades);
 
-	
-
-	
 	
 }//end main
