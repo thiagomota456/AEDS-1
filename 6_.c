@@ -60,55 +60,109 @@ void Imprime(TipoLista Lista)
 { TipoApontador Aux;
   Aux = Lista.Primeiro -> Prox;
   while (Aux != NULL)
-    { printf("%d\n", Aux -> Item.Chave);
+    { printf("%d ", Aux -> Item.Chave);
       Aux = Aux -> Prox;
     }
+    printf("\n");
 }
 
 /* ========================================================================== */
 
+//Retorna o item anterior ao procurado
+
+TipoApontador  ProcurarItem( TipoLista * lista, int chaveDoItemProcurado){
+
+  //Percorro toda a lista
+
+  for (TipoApontador i = lista -> Primeiro; i -> Prox != NULL; i = i -> Prox) {
+
+    //Se encontrar algum elemento da lista que a chave é igual a procurada
+
+    if(i ->Prox -> Item.Chave == chaveDoItemProcurado )
+
+      //retorno o endereço desse item
+
+      return i;
+  }
+
+  return NULL;
+
+}//end ProcurarItem
+
+TipoLista  particionarLista(TipoLista * lista,TipoApontador ponteiro_para_celula_onde_item_esta){
+
+    //Declaro e inicio a lista axiliar
+
+    TipoLista listaAux;
+    FLVazia(&listaAux);
+
+    //Add elemento pedido ao procximo do elemeto inicial
+
+    listaAux.Primeiro -> Prox = ponteiro_para_celula_onde_item_esta;
+
+    //Add ultimo da lista1 a lista 2
+
+    listaAux.Ultimo  = lista -> Ultimo -> Prox;
+
+    //Add ultimo da lista passada como o elemeto recebido
+
+    lista -> Ultimo = ponteiro_para_celula_onde_item_esta ;
+
+    //Add proximo da ultima celula igual a null
+
+    ponteiro_para_celula_onde_item_esta -> Prox = NULL;
+
+    //retorno endereço da nova lista
+
+    return listaAux;
+
+}
+
 int main(int argc, char *argv[])
-{ struct timeval t;
+{
+
+  //Declarações
 
   TipoLista lista;
+  TipoLista lista2;
   TipoItem item;
-  int vetor[MAX];
-  TipoApontador p;
-  int i, j, k, n;
-  float  tamanho=0;
-  gettimeofday(&t,NULL);
-  srand((unsigned int)t.tv_usec);
+  TipoApontador ponteiro_para_celula_onde_item_esta;
+  int number;
+
+  //Criei uma lista vazia
+
   FLVazia(&lista);
 
+for(int i = 0; i < 10; i++){
 
-  /*Gera uma permutacao aleatoria de chaves entre 1 e MAX*/
-  for(i = 0; i < MAX; i++) vetor[i] = i + 1;
-  for(i = 0; i < MAX; i++)
-    { k =  (int) (10.0 * rand()/(RAND_MAX + 1.0));
-      j =  (int) (10.0 * rand()/(RAND_MAX + 1.0));
-      n = vetor[k];
-      vetor[k] = vetor[j];
-      vetor[j] = n;
-    }
-  /*Insere cada chave na lista */
-  for (i = 0; i < MAX; i++)
-    { item.Chave = vetor[i];
-      Insere(item, &lista);
-      tamanho++;
-      printf("Inseriu: %d \n", item.Chave);
-    }
+  //Leio int
+
+  printf("Add 10 itens a lista: ");
+  scanf("%d",&number);
+
+  //Add a tipo int
+
+  item.Chave = number;
+
+  //Add item a lista
+
+  Insere(item, &lista);
+
+}//end for i
+
   Imprime(lista);
 
-  /*Retira cada chave da lista */
-  for(i = 0; i < MAX; i++)
-    { /*escolhe uma chave aleatoriamente */
-      k = (int) ((tamanho) * rand() / (RAND_MAX + 1.0));
-      p = lista.Primeiro;
-      /*retira chave apontada */
-      Retira(p, &lista, &item);
-      tamanho--;
-      printf("Retirou: %d\n", item.Chave);
-    }
-  Imprime (lista);
-  return(0);
-}
+  ponteiro_para_celula_onde_item_esta = ProcurarItem( &lista, 3);
+
+  printf("Item encontrado = %d\n", ponteiro_para_celula_onde_item_esta->Item.Chave );
+  printf("Item procurado = %d\n", ponteiro_para_celula_onde_item_esta->Prox ->Item.Chave );
+
+  lista2  = particionarLista(&lista, ponteiro_para_celula_onde_item_esta);
+
+  printf("Lista partida em 2 sendo uma do primeiro elemto ao anterio do procurado\nE outra do procurado ao fim da primeira lista.\n");
+
+  Imprime(lista);
+  Imprime(lista2);
+
+
+}//end main
