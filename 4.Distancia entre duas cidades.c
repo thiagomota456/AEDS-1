@@ -74,7 +74,7 @@ int cidadeCadastrada(CIDADE * cidaddes,int numero_de_cidades, char * cidade_lida
 
 			return 1;
 		}
-#define FLSH gets(l)
+
 	}//end for
 
 	//Caso não encontrada
@@ -217,7 +217,7 @@ int ** lerArquivo( char *nome_do_arquivo, char * cidade_de_origem, char * cidade
 
 	fscanf(PonteiroDeArquivo,"%s %s", cidade_de_origem, cidade_de_destino);
 
-	printf("%s %s", cidade_de_origem, cidade_de_destino);
+	//printf("%s %s", cidade_de_origem, cidade_de_destino);
 
 	//Fecho arquivo
 
@@ -225,143 +225,32 @@ int ** lerArquivo( char *nome_do_arquivo, char * cidade_de_origem, char * cidade
 
 	//Testes pra ver se leitura foi realizada adequadamente
 
-	printarVetorDeCidades( cidaddes, *numero_de_cidades_lidas);
+	//printarVetorDeCidades( cidaddes, *numero_de_cidades_lidas);
 
-	printarMatrizQuadrada(matriz_de_distancias, *numero_de_cidades_lidas);
+	//printarMatrizQuadrada(matriz_de_distancias, *numero_de_cidades_lidas);
 
 	//Retona matriz de distancia
 
 	return matriz_de_distancias;
 
 }//end lerArquivo
-/*
-void add(int numero_de_cidades, int **matriz_de_distancias)
-{
-  int i, j, k;
-
-	//Vertices são meu número de cidades
-
-	vertices = numero_de_cidades;
-
-	//Não sei exatamente o pq dessa porra, mas deixa por enquanto
-	//Mas acho que é pq o algoritimo que éguei podia receber mais d eum grafo por execução
-
-	if (!custos)
-		free(custos);
-			if(matriz_de_distancias[k][j] != 0){
-
-
-
-		}
-
-	custos = (int *) malloc(sizeof(int)*vertices*vertices);
-
-	for (i = 0; i <= (vertices * vertices); i++)
-	custos[i] = -1;
-
-
-
-	for(int k = 0; k < vertices ; k++){
-
-		//Para todas as vertices possiveis add caminhos
-
-		for(j = 0; j < vertices; j++){
-
-				if(matriz_de_distancias[k][j] != 0){
-
-				//Recebo origem (indexando de um pq o algoritimmo fonte faz assim)
-
-				origem = k+1;
-
-				//Recebo destino (indexando de um pq o algoritimmo fonte faz assim)
-
-				destino = j+1;
-
-				//Recebo custo armazenado na minha matriz
-
-				custo = matriz_de_distancias[i][j];
-
-				custos[(origem-1) * vertices + destino - 1] = custo;
-
-			}//end if
-
-		}//end for j
-
-	}//end for i
-
-}//end add
-*/
-
-//Funcionando aparentemente
-
-void add(int numero_de_cidades,int **matriz_de_distancias)//adiciona grafo
-{
-   vertices = numero_de_cidades;
-
-	 //Não sei pra que srve, do alg. original
-
-   if (!custos)
-      free(custos);
-
-   custos = (int *) malloc(sizeof(int)*vertices*vertices);
-
-	 //coloco -1 em todas as posiçoes necessarias promeu vetor custo +1
-
-   for (int i = 0; i <= vertices * vertices; i++)
-      custos[i] = -1;
-
-	//Inserir arestas
-
-   for(int a = 1; a < numero_de_cidades+1; a++){
-
-				for(int b = 1; b < numero_de_cidades+1; b++){
-
-            if(matriz_de_distancias[a-1][b-1] != 0){
-                origem=a;
-
-                destino=b;
-
-                custo=matriz_de_distancias[a-1][b-1];
-
-                custos[(origem-1) * vertices + destino - 1] = custo;
-            }//end if
-
-        }//end for b
-
-    }//end for a
-}
 
 // Fonte : https://www.revista-programar.info/artigos/algoritmo-de-dijkstra/
 
-void dijkstra(int vertices,int origem,int destino,int *custos, CIDADE * listaDeCidades)
+//Funcionando aparentemente
+
+//int destino, origem, vertices = 0;
+//int custo, *custos = NULL;
+void dijkstra(int vertices,int origem,int destino,int *custos,CIDADE v1[])
 {
-	//printf("ENTRA PORRA 1\n" );
    int i,v, cont = 0;
    int *ant, *tmp;
-   int *z;     /* vertices para os quais se conhece o caminho minimo */
+   int *z;
    double min;
-   double dist[vertices]; /* vetor com os custos dos caminhos */
-
-	 //printf("ENTRA PORRA 2\n" );
-
-   /* aloca as linhas da matriz */
+   double dist[vertices];
    ant = calloc (vertices, sizeof(int *));
    tmp = calloc (vertices, sizeof(int *));
-   if (ant == NULL) {
-      printf ("** Erro: Memoria Insuficiente **");
-      exit(-1);
-   }
-
-	 //printf("ENTRA PORRA 3\n" );
-
    z = calloc (vertices, sizeof(int *));
-   if (z == NULL) {
-      printf ("** Erro: Memoria Insuficiente **");
-      exit(-1);
-   }
-
-	 //printf("ENTRA PORRA 4\n" );
-
    for (i = 0; i < vertices; i++) {
       if (custos[(origem - 1) * vertices + i] !=- 1) {
          ant[i] = origem - 1;
@@ -376,22 +265,14 @@ void dijkstra(int vertices,int origem,int destino,int *custos, CIDADE * listaDeC
    z[origem-1] = 1;
    dist[origem-1] = 0;
 
-	 //printf("ENTRA PORRA 5\n" );
-
-   /* Laco principalvoid add(int numero_de_cidades, int **matriz_de_distancias)
- */
    do {
-
-      /* Encontrando o vertice que deve entrar em z */
-      min = HUGE_VAL;
+      min = 1000;
       for (i=0;i<vertices;i++)
          if (!z[i])
             if (dist[i]>=0 && dist[i]<min) {
                min=dist[i];v=i;
             }
-
-      /* Calculando as distancias dos novos vizinhos de z */
-      if (min != HUGE_VAL && v != destino - 1) {
+      if (min != 1000 && v != destino - 1) {
          z[v] = 1;
          for (i = 0; i < vertices; i++)
             if (!z[i]) {
@@ -402,43 +283,41 @@ void dijkstra(int vertices,int origem,int destino,int *custos, CIDADE * listaDeC
               }
       }
    } while (v != destino - 1 && min != HUGE_VAL);
+   printf("Menor percurso: ");
+      i = destino;
+      i = ant[i-1];
+      while (i != -1) {
+         tmp[cont] = i+1;
+         cont++;
+         i = ant[i];
+      }
+      for (i = cont; i > 0 ; i--) {
+         printf("%s ",v1[tmp[i-1]-1].nome);
+      }
+      printf("%s", v1[destino-1].nome);
 
-	 //printf("ENTRA PORRA 6\n" );
+      printf("\nDistancia total: %d Km",(int) dist[destino-1]);
+}
 
-	 /* Mostra o Resultado da procura */
-	 //printf("ENTRA PORRA 7\n" );
-
-	 //for (int ij = 0; ij < 25; ij++)	/* code */
-	 		//printf("%d\n", ant[ij]);
-
-     i = destino;
-     i = ant[i-1];
-
-		 //printf("ENTRA PORRA 8\n" );
-
-		 /***************************O Erro esta aqui ***********************************/
-     while (i != -1) {
-
-       tmp[cont] = i+1;
-       cont++;
-       i = ant[i];
-
-			// printf("Laçço PORRA\n" );
-
-     }
-
-		 //printf("ENTRA PORRA 9\n" );
-     for (i = cont+1; i > 0 ; i--) {
-       printf("%s ", listaDeCidades[tmp[i-1]].nome);
-     }
-
-		 //printf("ENTRA PORRA 10\n" );
-    // printf("%s ", listaDeCidades[destino-1].nome);
-
-     printf("\nDistancia total: %d Km",(int) dist[destino-1]);
-
-
-}//end dijkstra
+void add(int p,int **v)//adiciona grafo
+{
+   vertices=p;
+   if (!custos)
+      free(custos);
+   custos = (int *) malloc(sizeof(int)*vertices*vertices);
+   for (int i = 0; i <= vertices * vertices; i++)
+      custos[i] = -1;
+   for(int g=1;g<p+1;g++){
+        for(int t=1;t<p+1;t++){
+            if(v[g-1][t-1]!=0){
+                origem=g;
+                destino=t;
+                custo=v[g-1][t-1];
+                custos[(origem-1) * vertices + destino - 1] = custo;
+            }
+        }
+    }
+}
 
 int main(){
 
@@ -469,8 +348,8 @@ int main(){
 	int origemDeProcura = NumeroDaCidadeCadastrada(cidaddes,numero_de_cidades, cidade_de_origem) + 1;
 	int destinoDeProcura = NumeroDaCidadeCadastrada(cidaddes,numero_de_cidades, cidade_de_destino)+ 1;
 
-	printf("origem: %d\n", origemDeProcura);
-	printf("Destino: %d\n", destinoDeProcura);
+	//printf("origem: %d\n", origemDeProcura);
+	//printf("Destino: %d\n", destinoDeProcura);
 
 	//dijkstra(vertices, i,j, custos)
 	dijkstra( numero_de_cidades, origemDeProcura, destinoDeProcura, custos, cidaddes);
