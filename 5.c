@@ -69,7 +69,7 @@ TipoApontador procurarItem(TipoLista *Lista, TipoChave chave){
 
   //Percorro todo o vetor de chave
 
-  for (int i = 0; i < Lista -> Ultimo; i++){
+  for (i = 0; i < Lista -> Ultimo; i++){
 
     //Se a chave do item é igual a chave procurada, retorno o indice dele
 
@@ -104,7 +104,13 @@ void particionarLista(TipoLista * listaOriginal, TipoLista * novaLista, TipoApon
 
     //Copio item indicado para novaLista e o retiro da listaOriginal
 
+    //printf("Lista 1: ");Imprime(*listaOriginal);
+    //printf("Lista 2: ");Imprime(*novaLista);
+
     for(int i = 0; i < quantidadeDeLacosLoop ; i++){
+
+      //printf("Lista 1: ");Imprime(*listaOriginal);
+      //printf("Lista 2: ");Imprime(*novaLista);
 
       //Add item indicado a nova lista
 
@@ -112,59 +118,15 @@ void particionarLista(TipoLista * listaOriginal, TipoLista * novaLista, TipoApon
 
       //Retiro item add a lista 2
 
-      Retira(item, listaOriginal, &ItemAuxiliar);
+      Retira(item+1, listaOriginal, &ItemAuxiliar);
 
     }//end for
 
 
+
+
 }//end particionarLista
 
-int main(int argc, char *argv[]){
-
-  //Declarações
-
-  TipoLista lista;
-  TipoLista lista2;
-  TipoItem item;
-  int aux1, aux2;
-
-  //Inici lista Vazia
-
-  FLVazia(&lista);
-
-  //add itens
-
-  printf("Add itens: \n");
-
-  for (int i = 0; i < 6; i++){
-
-      scanf("%d", &aux1);
-      item.Chave = aux1;
-      Insere(item, &lista);
-
-  }//end for i
-  Imprime(lista);
-
-  printf("Chave do item a ser procurado: ");
-  scanf("%d", &aux1);
-  aux2 = procurarItem(&lista, aux1);
-
-  printf("Item %d com indice %d encontrado.\n", lista.Item[aux2].Chave, aux2 );
-
-  particionarLista(&lista, &lista2, (TipoApontador)aux2);
-
-
-  Imprime(lista);
-  Imprime(lista2);
-
-  return(0);
-
-  //printf("\nTamanho: %d->Item.Chave\n",size(&lista));
-
-}//end main
-
-
-/*
 void menu(){
   printf("1. Criar lista vazia\n");
   printf("2. Inserir elemento\n");
@@ -186,6 +148,8 @@ int main(int argc, char *argv[]){
   TipoItem item;
   TipoApontador aponta_item;
   int number, opcao, aux;
+
+  printf("\n\nSempre Crie inicialmente uma lista Vazia.\n\n");
 
   do{
       //Printo opções para o usuario
@@ -263,6 +227,7 @@ int main(int argc, char *argv[]){
         aponta_item = procurarItem( &lista, number);
         particionarLista(&lista, &lista2, aponta_item);
 
+        printf("\n");
         printf("Lista 1: ");Imprime(lista);
         printf("Lista 2: ");Imprime(lista2);
         printf("\n");
@@ -282,7 +247,7 @@ int main(int argc, char *argv[]){
 
       default :
 
-      printf("Digite uma opção valida!");
+      printf("\nDigite uma opção valida!\n");
 
     }//end switch
 
@@ -290,4 +255,3 @@ int main(int argc, char *argv[]){
 
 
 }//end main
-*/

@@ -142,6 +142,10 @@ int main(int argc, char *argv[]){
   TipoApontador aponta_item;
   int number, opcao, aux;
 
+
+
+printf("\n\nSempre Crie inicialmente uma lista Vazia.\n\n");
+
   do{
       //Printo opções para o usuario
 
