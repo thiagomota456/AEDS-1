@@ -91,7 +91,7 @@ TipoApontador  ProcurarItem( TipoLista * lista, int chaveDoItemProcurado){
 
 }//end ProcurarItem
 
-TipoLista  particionarLista(TipoLista * lista,TipoApontador ponteiro_para_celula_onde_item_esta){
+TipoLista  particionarLista(TipoLista * lista,TipoApontador aponta_item){
 
     //Declaro e inicio a lista axiliar
 
@@ -100,7 +100,7 @@ TipoLista  particionarLista(TipoLista * lista,TipoApontador ponteiro_para_celula
 
     //Add elemento pedido ao procximo do elemeto inicial
 
-    listaAux.Primeiro -> Prox = ponteiro_para_celula_onde_item_esta -> Prox;
+    listaAux.Primeiro -> Prox = aponta_item -> Prox;
 
     //Add ultimo da lista1 a lista 2
 
@@ -108,11 +108,11 @@ TipoLista  particionarLista(TipoLista * lista,TipoApontador ponteiro_para_celula
 
     //Add ultimo da lista passada como o elemeto recebido
 
-    lista -> Ultimo = ponteiro_para_celula_onde_item_esta ;
+    lista -> Ultimo = aponta_item ;
 
     //Add proximo da ultima celula igual a null
 
-    ponteiro_para_celula_onde_item_esta -> Prox = NULL;
+    aponta_item -> Prox = NULL;
 
     //retorno endereço da nova lista
 
@@ -139,7 +139,7 @@ int main(int argc, char *argv[]){
   TipoLista lista;
   TipoLista lista2;
   TipoItem item;
-  TipoApontador ponteiro_para_celula_onde_item_esta;
+  TipoApontador aponta_item;
   int number, opcao, aux;
 
   do{
@@ -186,8 +186,8 @@ int main(int argc, char *argv[]){
 
         printf("Digite a chave do item que deseja retirar: ");
         scanf("%d",&number);
-        ponteiro_para_celula_onde_item_esta = ProcurarItem( &lista, number);
-        Retira(ponteiro_para_celula_onde_item_esta, &lista, &item);
+        aponta_item = ProcurarItem( &lista, number);
+        Retira(aponta_item, &lista, &item);
         printf("Item retirado tem a chave = %d\n", item.Chave );
         printf("\n");
 
@@ -199,8 +199,8 @@ int main(int argc, char *argv[]){
 
         printf("Digite a chave do item que deseja procurar: ");
         scanf("%d",&number);
-        ponteiro_para_celula_onde_item_esta = ProcurarItem( &lista, number);
-        printf("Item procurado %d que é precedidido de %d \n", ponteiro_para_celula_onde_item_esta->Prox ->Item.Chave, ponteiro_para_celula_onde_item_esta->Item.Chave);
+        aponta_item = ProcurarItem( &lista, number);
+        printf("Item procurado %d que é precedidido de %d \n", aponta_item->Prox ->Item.Chave, aponta_item->Item.Chave);
         printf("\n");
 
       break;
@@ -212,8 +212,8 @@ int main(int argc, char *argv[]){
 
         printf("Digite a chave do item a partir do qual deseja particinar: ");
         scanf("%d",&number);
-        ponteiro_para_celula_onde_item_esta = ProcurarItem( &lista, number);
-        lista2  = particionarLista(&lista, ponteiro_para_celula_onde_item_esta);
+        aponta_item = ProcurarItem( &lista, number);
+        lista2  = particionarLista(&lista, aponta_item);
 
         printf("Lista 1: ");Imprime(lista);
         printf("Lista 2: ");Imprime(lista2);
