@@ -25,17 +25,17 @@ void FFVazia(TipoFila *Fila)
 { Fila->Frente = (TipoApontador) malloc(sizeof(TipoCelula));
   Fila->Tras = Fila->Frente;
   Fila->Frente->Prox = NULL;
-} 
+}
 
 int Vazia(TipoFila Fila)
-{ return (Fila.Frente == Fila.Tras); } 
+{ return (Fila.Frente == Fila.Tras); }
 
 void Enfileira(TipoItem x, TipoFila *Fila)
 { Fila->Tras->Prox = (TipoApontador) malloc(sizeof(TipoCelula));
   Fila->Tras = Fila->Tras->Prox;
   Fila->Tras->Item = x;
   Fila->Tras->Prox = NULL;
-} 
+}
 
 void Desenfileira(TipoFila *Fila, TipoItem *Item)
 { TipoApontador q;
@@ -44,51 +44,91 @@ void Desenfileira(TipoFila *Fila, TipoItem *Item)
   Fila->Frente = Fila->Frente->Prox;
   *Item = Fila->Frente->Item;
   free(q);
-} 
+}
 
 void Imprime(TipoFila Fila)
 { TipoApontador Aux;
   Aux = Fila.Frente->Prox;
-  while (Aux != NULL) 
+  while (Aux != NULL)
     { printf("%d\n", Aux->Item.Chave);
       Aux = Aux->Prox;
     }
 }
 
 
-int main(int argc, char *argv[])
-{ struct timeval t;
 
+int main(){
+
+	FILE *PonteiroDeArquivo;
   TipoFila fila;
-  TipoItem item;
-  int vetor[MAX];
-  int i, j, k, n;
+  TipoItem estouChateadoComAImbecilDeUmaAmiga;
+  char nomeDoArquivo[100];
+  char opcao;
+  int conteudoDoItem;
 
-  gettimeofday(&t,NULL);
-  srand((unsigned int)t.tv_usec);
+  //Inicio fila vazia
 
   FFVazia(&fila);
-  
-  /*Gera uma permutacao aleatoria de chaves entre 1 e MAX*/
-  for(i = 0; i < MAX; i++) vetor[i] = i + 1;
-  for(i = 0; i < MAX; i++)
-    { k =  (int) (10.0 * rand()/(RAND_MAX + 1.0));
 
-      j =  (int) (10.0 * rand()/(RAND_MAX + 1.0));
-      n = vetor[k];
-      vetor[k] = vetor[j];
-      vetor[j] = n;
-    }
-  /*Insere cada chave na lista */
-  for (i = 0;i < MAX; i++)
-    { item.Chave = vetor[i];
-      Enfileira(item, &fila);
-      printf("Enfileirou: %d \n", item.Chave);
-    }
-  /*Desenfieleira cada chave */
-  for (i = 0;i < MAX; i++)
-    { Desenfileira(&fila, &item);
-      printf("Desenfileirou: %d \n", item.Chave);
-    }
+  //Lê nome do arquivo
+
+  printf("Digite o nome do arquivo: ");
+  scanf("%s", nomeDoArquivo);
+
+	//Abri arquivo para leitura
+
+	PonteiroDeArquivo = fopen(nomeDoArquivo, "r");
+
+	//Testa se realizoua a litura correta,
+
+	if(PonteiroDeArquivo == NULL){
+
+		printf("ERRO: NAO FOI POSSIVEL ABRIR O ARQUIVO\n");
+		return 0;
+	}
+
+  //Leio o arquivo
+  while( fscanf(PonteiroDeArquivo, "%c", &opcao) != EOF){
+
+    //Se linha pede pra add, eu add item
+
+    if(opcao == 'a'){
+
+      //Leio conteudoDoItem
+
+      fscanf(PonteiroDeArquivo, "%d", &conteudoDoItem);
+
+      //Add Conteudo passado a um item
+
+      estouChateadoComAImbecilDeUmaAmiga.Chave = conteudoDoItem;
+
+      //Add a a fila
+
+      Enfileira(estouChateadoComAImbecilDeUmaAmiga, &fila);
+
+    }//end if a
+
+    if(opcao == 'b'){
+
+      //Retira fila elemento da fila e quarda em estouChateadoComAImbecilDeUmaAmiga
+
+      Desenfileira(&fila, &estouChateadoComAImbecilDeUmaAmiga);
+
+    }//end if b
+
+    if(opcao == 'c'){
+
+      //imprime lista
+
+      printf("\n");
+      printf("Processos na fila:\n");
+
+      Imprime(fila);
+
+    }//end if c
+
+  }//end while
+
   return 0;
-}
+
+}//end main
