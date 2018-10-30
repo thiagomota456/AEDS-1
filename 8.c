@@ -81,19 +81,76 @@ void lerArquivo(TipoPilha * pilha, char * nomeDoArquivo){
 
     Empilha( itemAuxiliar, pilha);
 
+
+
   }//end while
 
   fclose(arq);
 
 }//end lerArquivo
 
+//Ordena pilha usando Bucketsort
 
+void Bucketsort(TipoPilha *pilha){
+
+  TipoItem itemAuxiliar;
+  TipoPilha baude[11];
+  int l = 0;
+  //Desempilho e coloco no baulde apropriado
+
+
+  while (l < 11) {
+    FPVazia(&baude[l]);
+    l++;
+  }
+
+  while (!Vazia(*pilha)) {
+
+    //Retiro item
+
+    Desempilha( pilha, &itemAuxiliar);
+
+    //printf("%s\n", itemAuxiliar.Nome);
+    //printf("%d\n", itemAuxiliar.Nota);
+
+    //Coloco no balde apropriado
+
+    Empilha(itemAuxiliar, &baude[itemAuxiliar.Nota]);
+
+  }//end while
+
+  //Vou esvaziar todos os baldes e por itens na pilha de forma ordenada
+
+  //Percorro todos os bauldes
+
+  for (int i = 0; i < 11; i++) {
+
+    //Esvazio baulde a baulde do maior pro menor colocando em pilha
+
+    while (!Vazia(baude[i])) {
+
+      Desempilha( &baude[i], &itemAuxiliar);
+
+      printf("%s\n", itemAuxiliar.Nome);
+      printf("%d\n", itemAuxiliar.Nota);
+    }//end printf
+/*
+    while (!Vazia(baude[i])) {
+
+      Desempilha( &baude[i], &itemAuxiliar);
+      Empilha(itemAuxiliar, pilha);
+
+    }//end while
+*/
+  }//end for
+
+}//end Bucketsort
 
 int main(){
 
   char nomeDoArquivo[100];
   TipoPilha pilha;
-  TipoItem itemAuxiliar;
+  //TipoItem itemAuxiliar;
 
   //Inicio pilha
 
@@ -101,11 +158,19 @@ int main(){
 
   printf("Digite o nome do arquivo: ");
   scanf("%s", nomeDoArquivo);
+  printf("\n");
 
+  lerArquivo( &pilha, nomeDoArquivo);
+
+  Bucketsort(&pilha);
+/*
   while (!Vazia(pilha)) {
-    Desempilha( &pilha, &itemAuxiliar);
-    printf("%s\n",itemAuxiliar.Nome);
-  }
 
+    Desempilha( &pilha, &itemAuxiliar);
+
+    printf("%s\n", itemAuxiliar.Nome);
+    printf("%d\n", itemAuxiliar.Nota);
+  }//end printf
+*/
   return 0;
 }
