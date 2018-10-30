@@ -55,11 +55,12 @@ void Desempilha(TipoPilha *Pilha, TipoItem *Item)
 
 int Tamanho(TipoPilha Pilha)
 { return (Pilha.Tamanho); }
-/*
-Void lerArquivo(TipoPilha * pilha, char * nomeDoArquivo){
+
+//Recebe como parametro endereço de uma pilha e string e grava na pilha itens contidos no arquivo que a string guarda o nome
+
+void lerArquivo(TipoPilha * pilha, char * nomeDoArquivo){
 
   FILE *arq;
-  char nomeDoArquivo[100];
   TipoItem itemAuxiliar;
 
   //Abro arquivo
@@ -71,47 +72,40 @@ Void lerArquivo(TipoPilha * pilha, char * nomeDoArquivo){
   if (arq == NULL){
 
       printf("Problemas na abertura do arquivo\n");
-      return 0;
+      return;
   }
 
   //Lê todos os arquivos
 
   while (fread( &itemAuxiliar, sizeof(TipoItem), 1, arq) == 1 ) {
 
-    printf("%s\n", itemAuxiliar.Nome);
-    printf("%d\n", itemAuxiliar.Nota);
+    Empilha( itemAuxiliar, pilha);
 
   }//end while
 
   fclose(arq);
 
 }//end lerArquivo
-*/
+
+
+
 int main(){
 
-  FILE *arq;
-  char nomeDoArquivo[100], nome[100];
-  int nota;
+  char nomeDoArquivo[100];
+  TipoPilha pilha;
   TipoItem itemAuxiliar;
 
-  arq = fopen( "banco.dat", "rb");
+  //Inicio pilha
 
-  if (arq == NULL){
+  FPVazia(&pilha);
 
-      printf("Problemas na abertura do arquivo\n");
-      return 0;
+  printf("Digite o nome do arquivo: ");
+  scanf("%s", nomeDoArquivo);
+
+  while (!Vazia(pilha)) {
+    Desempilha( &pilha, &itemAuxiliar);
+    printf("%s\n",itemAuxiliar.Nome);
   }
-
-  //fread(void *ptr, size_t size, size_t nmemb, FILE *stream)
-
-  while (fread( &itemAuxiliar, sizeof(TipoItem), 1, arq) == 1 ) {
-
-    printf("%s\n", itemAuxiliar.Nome);
-    printf("%d\n", itemAuxiliar.Nota);
-
-  }
-
-  fclose(arq);
 
   return 0;
 }
